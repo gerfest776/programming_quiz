@@ -18,7 +18,4 @@ class MainConfig(BaseSettings):
 
 
 def get_config() -> MainConfig:
-    return MainConfig(
-        _env_file=".env",
-        _env_file_encoding="utf-8"
-    )
+    return MainConfig(_env_file=".env", _env_file_encoding="utf-8")
