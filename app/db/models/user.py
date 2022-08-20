@@ -3,9 +3,13 @@ from sqlmodel import Field, SQLModel
 
 
 class UserBase(SQLModel):
-    email: EmailStr = Field(primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
+    email: EmailStr = Field(sa_column_kwargs={"unique": True})
     first_name: str = Field(max_length=50)
     last_name: str = Field(max_length=70)
     is_active: bool = Field(default=True)
     is_superuser: bool = Field(default=False)
+
+
+class UserDb(UserBase):
     hashed_password: str = Field(nullable=False)
