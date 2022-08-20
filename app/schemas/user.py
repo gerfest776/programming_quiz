@@ -5,7 +5,7 @@ from app.db.models.user import UserBase
 
 class UserCreate(BaseModel):
     email: EmailStr
-    password: str
+    hashed_password: str
     first_name: str
     last_name: str
 
