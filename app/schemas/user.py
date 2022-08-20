@@ -10,5 +10,10 @@ class UserCreate(BaseModel):
     last_name: str
 
 
+class UserPatch(BaseModel):
+    first_name: str | None
+    last_name: str | None
+
+
 class UserRead(UserBase):
     id: int
