@@ -193,6 +193,30 @@ pymysql = ["pymysql (<1)", "pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
+name = "sqlalchemy2-stubs"
+version = "0.0.2a25"
+description = "Typing Stubs for SQLAlchemy 1.4"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+typing-extensions = ">=3.7.4"
+
+[[package]]
+name = "sqlmodel"
+version = "0.0.6"
+description = "SQLModel, SQL databases in Python, designed for simplicity, compatibility, and robustness."
+category = "main"
+optional = false
+python-versions = ">=3.6.1,<4.0.0"
+
+[package.dependencies]
+pydantic = ">=1.8.2,<2.0.0"
+SQLAlchemy = ">=1.4.17,<1.5.0"
+sqlalchemy2-stubs = "*"
+
+[[package]]
 name = "starlette"
 version = "0.19.1"
 description = "The little ASGI library that shines."
@@ -232,7 +256,7 @@ standard = ["colorama (>=0.4)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "PyYAML (
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ab000b0ce16009387eb44601a3dff6115313f0c3441697289a61c9cef9ff185f"
+content-hash = "ba2018b5231104fe23676afdbf508d24055d0488cefa5f198fee0a414cd726ac"
 
 [metadata.files]
 alembic = [
@@ -506,6 +530,14 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.4.40-cp39-cp39-win32.whl", hash = "sha256:6b70d02bbe1adbbf715d2249cacf9ac17c6f8d22dfcb3f1a4fbc5bf64364da8a"},
     {file = "SQLAlchemy-1.4.40-cp39-cp39-win_amd64.whl", hash = "sha256:bf073c619b5a7f7cd731507d0fdc7329bee14b247a63b0419929e4acd24afea8"},
     {file = "SQLAlchemy-1.4.40.tar.gz", hash = "sha256:44a660506080cc975e1dfa5776fe5f6315ddc626a77b50bf0eee18b0389ea265"},
+]
+sqlalchemy2-stubs = [
+    {file = "sqlalchemy2-stubs-0.0.2a25.tar.gz", hash = "sha256:2fbfddfee7fc6b45206dc52e9fe9d91a787efb6af13191debe84dda9b4798abd"},
+    {file = "sqlalchemy2_stubs-0.0.2a25-py3-none-any.whl", hash = "sha256:9104894cee3159906079c4a31c2a66fbedfc72a381c51dfd1d8ebae8ffd7f2ca"},
+]
+sqlmodel = [
+    {file = "sqlmodel-0.0.6-py3-none-any.whl", hash = "sha256:c5fd8719e09da348cd32ce2a5b6a44f289d3029fa8f1c9818229b6f34f1201b4"},
+    {file = "sqlmodel-0.0.6.tar.gz", hash = "sha256:3b4f966b9671b24d85529d274e6c4dbc7753b468e35d2d6a40bd75cad1f66813"},
 ]
 starlette = [
     {file = "starlette-0.19.1-py3-none-any.whl", hash = "sha256:5a60c5c2d051f3a8eb546136aa0c9399773a689595e099e0877704d5888279bf"},

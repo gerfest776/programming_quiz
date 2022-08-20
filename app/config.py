@@ -1,4 +1,6 @@
-from pydantic import BaseSettings
+from typing import Any
+
+from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class AppSettings(BaseSettings):
@@ -6,10 +8,27 @@ class AppSettings(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
-    dsn: str
+    DATABASE_USER: str
+    DATABASE_PASSWORD: str
+    DATABASE_HOST: str
+    DATABASE_PORT: str | int
+    DATABASE_NAME: str
+    ASYNC_DATABASE_URI: str | None
 
-    class Config:
-        env_prefix = "database_"
+    @validator("ASYNC_DATABASE_URI", pre=True)
+    def assemble_db_connection(
+        self, v: str | None, values: dict[str, Any]
+    ) -> Any:
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme="postgresql+asyncpg",
+            user=values.get("DATABASE_USER"),
+            password=values.get("DATABASE_PASSWORD"),
+            host=values.get("DATABASE_HOST"),
+            port=str(values.get("DATABASE_PORT")),
+            path=f"/{values.get('DATABASE_NAME') or ''}",
+        )
 
 
 class RedisSettings(BaseSettings):
@@ -17,9 +36,9 @@ class RedisSettings(BaseSettings):
 
 
 class MainConfig(BaseSettings):
-    db: DatabaseSettings = DatabaseSettings()
-    redis: RedisSettings = RedisSettings()
-    app: AppSettings = AppSettings()
+    db: DatabaseSettings = DatabaseSettings(_env_file=".env")
+    redis: RedisSettings = RedisSettings(_env_file=".env")
+    app: AppSettings = AppSettings(_env_file=".env")
 
 
 def get_config() -> MainConfig:
