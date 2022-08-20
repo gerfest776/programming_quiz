@@ -8,7 +8,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": get_config().db.ASYNC_DATABASE_URI}
 
 
 @app.get("/hello/{name}")

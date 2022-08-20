@@ -1,4 +1,6 @@
 import asyncio
+import pathlib
+import sys
 from logging.config import fileConfig
 
 from alembic import context
@@ -6,6 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import SQLModel, create_engine
 
 from app.config import get_config
+from app.db.models import *  # noqa
+
+sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
+
 
 config = context.config
 
@@ -17,9 +23,8 @@ target_metadata = SQLModel.metadata
 
 
 def run_migrations_offline() -> None:
-    url = get_config().db.ASYNC_DATABASE_URI
     context.configure(
-        url=url,
+        url=get_config().db.ASYNC_DATABASE_URI,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},

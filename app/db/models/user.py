@@ -11,5 +11,5 @@ class UserBase(SQLModel):
     is_superuser: bool = Field(default=False)
 
 
-class UserDb(UserBase):
+class User(UserBase, table=True):
     hashed_password: str = Field(nullable=False)

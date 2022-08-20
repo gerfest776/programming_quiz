@@ -17,7 +17,7 @@ class DatabaseSettings(BaseSettings):
 
     @validator("ASYNC_DATABASE_URI", pre=True)
     def assemble_db_connection(
-        self, v: str | None, values: dict[str, Any]
+        cls, v: str | None, values: dict[str, Any]
     ) -> Any:
         if isinstance(v, str):
             return v
