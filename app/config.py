@@ -4,7 +4,7 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class AppSettings(BaseSettings):
-    pass
+    API_PREFIX: str
 
 
 class DatabaseSettings(BaseSettings):
