@@ -9,6 +9,9 @@ python = "^3.10"
 fastapi = "^0.79.0"
 uvicorn = "^0.18.2"
 python-dotenv = "^0.20.0"
+alembic = "^1.8.1"
+psycopg2-binary = "^2.9.3"
+SQLAlchemy = "^1.4.40"
 
 [tool.poetry.dev-dependencies]
 
@@ -29,4 +32,7 @@ max-line-length = 80
 [tool.isort]
 profile = "black"
 skip = [".gitignore", ".dockerignore", "__init__.py"]
+
+
+
 

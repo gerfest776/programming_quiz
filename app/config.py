@@ -6,7 +6,10 @@ class AppSettings(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
-    pass
+    dsn: str
+
+    class Config:
+        env_prefix = "database_"
 
 
 class RedisSettings(BaseSettings):
@@ -14,7 +17,9 @@ class RedisSettings(BaseSettings):
 
 
 class MainConfig(BaseSettings):
-    pass
+    db: DatabaseSettings = DatabaseSettings()
+    redis: RedisSettings = RedisSettings()
+    app: AppSettings = AppSettings()
 
 
 def get_config() -> MainConfig:
