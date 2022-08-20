@@ -8,6 +8,7 @@ authors = ["Герман Гриценко <gerfest.gricenko@gmail.com>"]
 python = "^3.10"
 fastapi = "^0.79.0"
 uvicorn = "^0.18.2"
+python-dotenv = "^0.20.0"
 
 [tool.poetry.dev-dependencies]
 
