@@ -17,13 +17,9 @@ async def login(
     email: EmailStr, password: str, session: AsyncSession = Depends(get_session)
 ) -> Any:
     user = await authenticate(email, password, session)
-    access_token, refresh_token = (
-        create_access_token(user.id),
-        create_refresh_token(user.id),
-    )
     return Token(
-        access_token=access_token,
-        refresh_token=refresh_token,
+        access_token=create_access_token(user.id),
+        refresh_token=create_refresh_token(user.id),
         token_type="bearer",
     )
 
