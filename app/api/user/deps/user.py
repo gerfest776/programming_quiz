@@ -33,7 +33,7 @@ async def patch_exists_user(session: AsyncSession, user_id: User.id, **kwargs: U
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 
-async def authenticate(email: EmailStr, password: str, session: AsyncSession):
+async def authenticate(email: EmailStr | str, password: str, session: AsyncSession):
     user_qs = await session.execute(select(User).where(User.email == email))
     user = user_qs.scalar_one_or_none()
 

@@ -21,6 +21,7 @@ passlib = "^1.7.4"
 cryptography = "^37.0.4"
 jose = "^1.0.0"
 bcrypt = "^3.2.2"
+python-multipart = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 
