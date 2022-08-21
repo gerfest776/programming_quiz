@@ -5,6 +5,10 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 class AppSettings(BaseSettings):
     API_PREFIX: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 180
+    SECRET_KEY: str
+    ALGORITHM: str
 
 
 class DatabaseSettings(BaseSettings):

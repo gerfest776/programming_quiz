@@ -16,6 +16,10 @@ sqlmodel = "^0.0.6"
 asyncpg = "^0.26.0"
 greenlet = "^1.1.2"
 pydantic = {extras = ["email"], version = "^1.9.2"}
+python-jose = "^3.3.0"
+passlib = "^1.7.4"
+cryptography = "^37.0.4"
+jose = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 
