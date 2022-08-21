@@ -30,14 +30,14 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.black]
-line-length = 80
+line-length = 100
 target-version = ['py310']
 include = '\.pyi?$'
 extend-exclude = '/migrations/'
 
 [flake8]
 ignore = "F811"
-max-line-length = 80
+max-line-length = 100
 
 
 [tool.isort]
