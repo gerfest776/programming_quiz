@@ -9,6 +9,10 @@ from app.db.models.user import User
 from app.schemas.user import UserCreate
 
 
+async def get_user(session: AsyncSession, user_id: User.id):
+    return await session.get(User, int(user_id))
+
+
 async def create_new_user(session: AsyncSession, **kwargs: UserCreate.dict):
     obj = User(**kwargs)
     obj.hashed_password = get_password_hash(obj.hashed_password)
@@ -19,7 +23,7 @@ async def create_new_user(session: AsyncSession, **kwargs: UserCreate.dict):
 
 
 async def patch_exists_user(session: AsyncSession, user_id: User.id, **kwargs: UserCreate.dict):
-    if user := await session.get(User, user_id):
+    if user := get_user(session, user_id):
         for k, v in kwargs.items():
             setattr(user, k, v)
 

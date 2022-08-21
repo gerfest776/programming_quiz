@@ -18,3 +18,7 @@ class TokenRead(BaseModel):
 
 class RefreshToken(BaseModel):
     refresh_token: str
+
+
+class AccessToken(BaseModel):
+    refresh_token: str

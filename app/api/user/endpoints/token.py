@@ -1,18 +1,21 @@
 from typing import Any
 
-from fastapi import APIRouter, Depends
-from pydantic import EmailStr
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
+from pydantic import EmailStr, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.user.deps.auth import create_access_token, create_refresh_token
-from app.api.user.deps.user import authenticate
+from app.api.user.deps.user import authenticate, get_user
+from app.config import get_config
 from app.db.database import get_session
-from app.schemas.token import Token
+from app.schemas.token import Token, TokenRead
 
-router = APIRouter(prefix="/token")
+router = APIRouter(prefix="/login")
 
 
-@router.post("/login", response_model=Token, status_code=201)
+@router.post("/", response_model=Token, status_code=201)
 async def login(
     email: EmailStr, password: str, session: AsyncSession = Depends(get_session)
 ) -> Any:
@@ -24,38 +27,27 @@ async def login(
     )
 
 
-# @router.post(
-#     "/login/refresh_token", response_model=IPostResponseBase[TokenRead], status_code=201
-# )
-# async def get_refresh_token(
-#     body: RefreshToken = Body(...),
-# ) -> Any:
-#     """
-#     Get Refresh token
-#     """
-#     try:
-#         payload = jwt.decode(
-#             body.refresh_token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
-#         )
-#     except (jwt.JWTError, ValidationError):
-#         raise HTTPException(status_code=403, detail="Refresh token invalid")
-#
-#     if payload["type"] == "refresh":
-#         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-#         user = await crud.user.get(id=payload["sub"])
-#         if user.is_active:
-#             access_token = security.create_access_token(
-#                 payload["sub"], expires_delta=access_token_expires
-#             )
-#             return IPostResponseBase[TokenRead](
-#                 data=TokenRead(access_token=access_token, token_type="bearer"),
-#                 message="Access token generated correctly",
-#             )
-#         else:
-#             raise HTTPException(status_code=404, detail="User inactive")
-#     else:
-#         raise HTTPException(status_code=404, detail="Incorrect token")
-#
+@router.post("/refresh_token", response_model=TokenRead, status_code=201)
+async def get_new_access_token(
+    refresh_token: str, session: AsyncSession = Depends(get_session)
+) -> Any:
+    try:
+        payload = jwt.decode(
+            refresh_token, get_config().app.SECRET_KEY, algorithms=[get_config().app.ALGORITHM]
+        )
+    except (jwt.JWTError, ValidationError):
+        raise HTTPException(status_code=403, detail="Refresh token invalid")
+
+    if payload["type"] == "refresh":
+        user = await get_user(session, payload["sub"])
+        if user.is_active:
+            return TokenRead(access_token=create_access_token(payload["sub"]), token_type="bearer")
+        else:
+            raise HTTPException(status_code=404, detail="User inactive")
+    else:
+        raise HTTPException(status_code=404, detail="Incorrect token")
+
+
 #
 # @router.post("/login/access-token", response_model=TokenRead)
 # async def login_access_token(
