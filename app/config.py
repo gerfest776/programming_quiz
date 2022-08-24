@@ -20,9 +20,7 @@ class DatabaseSettings(BaseSettings):
     ASYNC_DATABASE_URI: str | None
 
     @validator("ASYNC_DATABASE_URI", pre=True)
-    def assemble_db_connection(
-        cls, v: str | None, values: dict[str, Any]
-    ) -> Any:
+    def assemble_db_connection(cls, v: str | None, values: dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
@@ -36,7 +34,15 @@ class DatabaseSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
-    pass
+    REDIS_HOST: str
+    REDIS_PORT: int | str
+    REDIS_URI: str | None
+
+    @validator("REDIS_URI", pre=True)
+    def assemble_redis_connection(cls, v: str | None, values: dict[str, Any]) -> Any:
+        if isinstance(v, str):
+            return v
+        return f"redis://{values.get('REDIS_HOST')}:{values.get('REDIS_PORT')}"
 
 
 class MainConfig(BaseSettings):
