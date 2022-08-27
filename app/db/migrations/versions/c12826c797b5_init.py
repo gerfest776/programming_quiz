@@ -1,8 +1,8 @@
 """init
 
-Revision ID: aecdf8fc5e61
+Revision ID: c12826c797b5
 Revises: 
-Create Date: 2022-08-21 21:59:02.749187
+Create Date: 2022-08-27 14:36:47.226303
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision = 'aecdf8fc5e61'
+revision = 'c12826c797b5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,7 @@ def upgrade() -> None:
     sa.Column('difficulty', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('language', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('type', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('text', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
@@ -40,6 +41,7 @@ def upgrade() -> None:
     )
     op.create_table('rightanswer',
     sa.Column('id', sa.Integer(), nullable=True),
+    sa.Column('text', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('description', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('question_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['question_id'], ['question.id'], ),
