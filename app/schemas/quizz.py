@@ -12,13 +12,10 @@ class GameBody(BaseModel):
     difficulty: Difficulty
 
 
-class AnswerCreate(AnswerBase):
-    pass
-
-
 class QuestionCreate(QuestionBase):
-    answers: list[AnswerCreate]
+    answers: list[AnswerBase]
 
 
 class QuestionRead(QuestionBase):
+    answers: list[AnswerBase]
     id: int
