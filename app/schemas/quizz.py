@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.db.models.quizz import Difficulty, Language, QuestionType
+from app.db.models.quizz import AnswerBase, Difficulty, Language, QuestionBase
 
 
 class GameToken(BaseModel):
@@ -12,20 +12,13 @@ class GameBody(BaseModel):
     difficulty: Difficulty
 
 
-class Answer(BaseModel):
-    text: str
-    description: str
+class AnswerCreate(AnswerBase):
+    pass
 
 
-class Question(BaseModel):
-    text: str
-    answers: str
+class QuestionCreate(QuestionBase):
+    answers: list[AnswerCreate]
 
 
-class CreateQuestion(BaseModel):
-    difficulty: Difficulty
-    language: Language
-    type: QuestionType
-    text: str
-    fake_answers: list[str]
-    right_answers: list[Answer]
+class QuestionRead(QuestionBase):
+    id: int

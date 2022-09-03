@@ -24,19 +24,25 @@ class QuestionType(str, Enum):
     SINGLE = "single"
 
 
-class Question(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class QuestionBase(SQLModel):
     difficulty: Difficulty
     language: Language
     type: QuestionType
     text: str
     fake_answers: list[str] = Field(sa_column=Column(ARRAY(String)))
-    right_answers: list["RightAnswer"] = Relationship(back_populates="question")
 
 
-class RightAnswer(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class AnswerBase(SQLModel):
     text: str
     description: str
-    question_id: int = Field(default=None, foreign_key="question.id")
-    question: Question = Relationship(back_populates="right_answers")
+    question_id: int | None = Field(default=None, foreign_key="question.id")
+
+
+class Question(QuestionBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    answers: list["Answer"] = Relationship(back_populates="question")
+
+
+class Answer(AnswerBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    question: Question | None = Relationship(back_populates="answers")

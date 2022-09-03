@@ -1,2 +1,2 @@
 from .user import User  # noqa
-from .quizz import RightAnswer, Question  # noqa
+from .quizz import Answer, Question  # noqa
