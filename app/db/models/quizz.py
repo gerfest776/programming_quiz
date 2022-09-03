@@ -39,10 +39,12 @@ class AnswerBase(SQLModel):
 
 
 class Question(QuestionBase, table=True):
+    __table_args__ = {"extend_existing": True}
     id: int | None = Field(default=None, primary_key=True)
     answers: list["Answer"] = Relationship(back_populates="question")
 
 
 class Answer(AnswerBase, table=True):
+    __table_args__ = {"extend_existing": True}
     id: int | None = Field(default=None, primary_key=True)
     question: Question | None = Relationship(back_populates="answers")

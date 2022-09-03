@@ -12,4 +12,5 @@ class UserBase(SQLModel):
 
 
 class User(UserBase, table=True):
+    __table_args__ = {"extend_existing": True}
     hashed_password: str = Field(nullable=False)
