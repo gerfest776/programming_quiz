@@ -16,6 +16,6 @@ class QuestionCreate(QuestionBase):
     answers: list[AnswerBase]
 
 
-class QuestionRead(QuestionBase):
-    answers: list[AnswerBase]
+class QuestionRead(BaseModel):
     id: int
+    answers: list[str]

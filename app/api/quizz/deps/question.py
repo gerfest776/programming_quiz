@@ -1,9 +1,10 @@
 from fastapi import Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_session
 from app.db.models.quizz import Answer, Question
-from app.schemas.quizz import QuestionCreate
+from app.schemas.quizz import QuestionCreate, QuestionRead
 
 
 class QuestionService:
@@ -25,3 +26,12 @@ class QuestionService:
         await self.session.refresh(question_obj)
 
         return question
+
+    async def retrieve_question(self, question_id: int) -> QuestionRead:
+        question = await self.session.get(Question, question_id)
+        statement = select(Answer).where(Answer.question_id == question.id)
+        return QuestionRead(
+            id=question.id,
+            answers=[i[0].text for i in (await self.session.execute(statement)).all()]
+            + question.fake_answers,
+        )
