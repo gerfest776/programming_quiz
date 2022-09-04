@@ -12,8 +12,6 @@ class QuestionService:
         self.session = session
 
     async def create_question(self, question: QuestionCreate) -> QuestionCreate:
-        [self.session.add(Answer.from_orm(answer)) for answer in question.answers]
-        await self.session.commit()
         question_obj = Question.from_orm(question)
         self.session.add(question_obj)
         await self.session.commit()
@@ -35,3 +33,10 @@ class QuestionService:
             answers=[i[0].text for i in (await self.session.execute(statement)).all()]
             + question.fake_answers,
         )
+
+    async def check_question(self, question_id: int, answers: list[str]) -> bool:
+        statement = select(Answer).where(Answer.question_id == question_id)
+        right_answers = [i[0].text for i in (await self.session.execute(statement)).all()]
+        if answers == right_answers:
+            return True
+        return False

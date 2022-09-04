@@ -19,3 +19,7 @@ class QuestionCreate(QuestionBase):
 class QuestionRead(BaseModel):
     id: int
     answers: list[str]
+
+
+class AnswerCheck(BaseModel):
+    answers: list[str]
