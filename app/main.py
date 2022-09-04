@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 from app.api.api import api_router
@@ -17,3 +18,13 @@ async def say_hello(name: str):
 
 
 app.include_router(api_router, prefix=get_config().app.API_PREFIX)
+
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "__main__:app",
+        host=get_config().app.HOST,
+        port=get_config().app.PORT,
+        workers=get_config().app.WORKERS,
+        reload=True,
+    )

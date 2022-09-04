@@ -18,7 +18,17 @@ x-settings:
     - ALGORITHM=${ALGORITHM}
 
 services:
-
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    <<: *global
+    depends_on:
+      - db
+      - redis
 
   redis:
     image: redis:latest

@@ -2,13 +2,13 @@ import json
 import random
 import uuid
 
-from api.quizz.deps.question import QuestionService
-from db.database import get_session
-from db.models import Question
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.quizz.deps.question import QuestionService
+from app.db.database import get_session
+from app.db.models import Question
 from app.db.redis import check_token, redis
 from app.schemas.quizz import AnswerCheck, GameBody, GameToken, QuestionRead
 

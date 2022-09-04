@@ -9,6 +9,9 @@ class AppSettings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 180
     SECRET_KEY: str
     ALGORITHM: str
+    HOST: str
+    PORT: int
+    WORKERS: int
 
 
 class DatabaseSettings(BaseSettings):
