@@ -1,51 +1,19 @@
 [tool.poetry]
-name = "programming_quiz"
+name = "programming-quiz"
 version = "0.1.0"
-description = ""
-authors = ["Герман Гриценко <gerfest.gricenko@gmail.com>"]
+description = "API service about knowledge preparing"
+authors = ["German Gritsenko"]
+readme = "README.md"
+packages = [{include = "programming_quiz"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-fastapi = "^0.79.0"
-uvicorn = "^0.18.2"
-python-dotenv = "^0.20.0"
-alembic = "^1.8.1"
-psycopg2-binary = "^2.9.3"
-SQLAlchemy = "^1.4.40"
-sqlmodel = "^0.0.6"
-asyncpg = "^0.26.0"
-greenlet = "^1.1.2"
-pydantic = {extras = ["email"], version = "^1.9.2"}
-python-jose = "^3.3.0"
-passlib = "^1.7.4"
-cryptography = "^37.0.4"
-jose = "^1.0.0"
-bcrypt = "^3.2.2"
-python-multipart = "^0.0.5"
-aioredis = "^2.0.1"
+python = "^3.12"
+fastapi = "^0.104.0"
+sqlalchemy = "^2.0.22"
+uvicorn = "^0.23.2"
+alembic = "^1.12.0"
 
-[tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-
-[tool.black]
-line-length = 100
-target-version = ['py310']
-include = '\.pyi?$'
-extend-exclude = '/migrations/'
-
-[flake8]
-ignore = "F811"
-max-line-length = 100
-
-
-[tool.isort]
-profile = "black"
-skip = [".gitignore", ".dockerignore", "__init__.py", "migrations"]
-
-
-
-
