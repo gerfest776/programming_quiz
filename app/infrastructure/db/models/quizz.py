@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from sqlalchemy import func
+from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
 
@@ -20,9 +20,12 @@ class BaseModel(Base):
 class QuestionAnswer(Base):
     __tablename__ = 'question_answer'
 
-    question: Mapped["Question"] = mapped_column(primary_key=True)
-    answer: Mapped["Answer"] = mapped_column(primary_key=True)
+    question_id: Mapped[int] = mapped_column(ForeignKey('questions.id'), primary_key=True)
+    answer_id: Mapped[int] = mapped_column(ForeignKey('answers.id'), primary_key=True)
     is_correct: Mapped[bool] = mapped_column(nullable=False, default=False)
+
+    question: Mapped['Question'] = relationship(back_populates="question_answer")
+    answer: Mapped['Answer'] = relationship(back_populates="answer_question")
 
 
 class Question(BaseModel):
@@ -48,4 +51,3 @@ class Answer(BaseModel):
     questions: Mapped[list['Question']] = relationship(
         secondary='question_answer', back_populates="answers"
     )
-

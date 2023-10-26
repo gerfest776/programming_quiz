@@ -4,7 +4,8 @@ from app.infrastructure.db.models.base import SqlAlchemyDatabase
 
 
 class Container(containers.DeclarativeContainer):
-    config = providers.Configuration()
+    config = providers.Configuration(yaml_files=["./app/config.yml"])
+
     db = providers.Singleton(
         SqlAlchemyDatabase,
         host=config.database.host,
