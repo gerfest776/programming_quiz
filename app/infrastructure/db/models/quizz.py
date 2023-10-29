@@ -3,11 +3,9 @@ from enum import Enum
 from uuid import UUID
 
 from sqlalchemy import func, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
-class Base(DeclarativeBase):
-    pass
+from app.infrastructure.db.models.base import Base
 
 
 class BaseModel(Base):

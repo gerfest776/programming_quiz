@@ -17,6 +17,7 @@ asyncpg = "^0.28.0"
 ruff = "^0.1.1"
 pre-commit = "^3.5.0"
 pyyaml = "^6.0.1"
+python-dotenv = "^1.0.0"
 
 
 [build-system]

@@ -1,6 +1,9 @@
 from dependency_injector import containers, providers
+from dotenv import load_dotenv
 
 from app.infrastructure.db.models.base import SqlAlchemyDatabase
+
+load_dotenv()
 
 
 class Container(containers.DeclarativeContainer):

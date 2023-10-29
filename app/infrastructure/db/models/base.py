@@ -1,3 +1,6 @@
+from sqlalchemy.orm import DeclarativeBase
+
+
 class SqlAlchemyDatabase:
     DRIVER = 'postgresql+asyncpg'
 
@@ -11,3 +14,8 @@ class SqlAlchemyDatabase:
             password: str
     ):
         self.db_uri = f'{self.DRIVER}://{user}:{password}@{host}:{port}/{name}'
+
+
+class Base(DeclarativeBase):
+    pass
+

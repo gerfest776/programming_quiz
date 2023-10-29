@@ -11,20 +11,25 @@ from app.container import Container
 from app.infrastructure.db.models import * # noqa
 
 
-db_config = Container().config()['database']
+database_container = Container().config.database
 config = context.config
 
-
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+
+section = config.config_ini_section
+config.set_section_option(section, "DB_HOST", str(database_container.host()))
+config.set_section_option(section, "DB_PORT", str(database_container.port()))
+config.set_section_option(section, "DB_USER", str(database_container.user()))
+config.set_section_option(section, "DB_NAME", str(database_container.db_name()))
+config.set_section_option(section, "DB_PASS", str(database_container.password()))
+
+
 target_metadata = Base.metadata # noqa
-config.set_main_option(
-    "sqlalchemy.url",
-    f'postgresql+asyncpg://'
-    f'{db_config["user"]}:{db_config["password"]}'
-    f'@{db_config["host"]}:{db_config["port"]}/{db_config["db_name"]}'
-)
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
