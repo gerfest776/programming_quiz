@@ -26,6 +26,14 @@ class QuestionAnswer(Base):
     answer: Mapped['Answer'] = relationship(back_populates="answer_question")
 
 
+class QuestionCategory(BaseModel):
+    __tablename__ = 'question_category'
+
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    questions: Mapped[list['Question']] = relationship(back_populates="category")
+
+
 class Question(BaseModel):
     __tablename__ = 'questions'
 
@@ -33,9 +41,19 @@ class Question(BaseModel):
         MULTI_CHOICE = 'MULTI_CHOICE'
         SINGLE_CHOICE = 'SINGLE_CHOICE'
 
+    class QuestionDifficulty(Enum):
+        BEGINNER = 'BEGINNER'
+        MEDIUM = 'MEDIUM'
+        ADVANCED = 'ADVANCED'
+
     id: Mapped[UUID] = mapped_column(primary_key=True)
     type: Mapped[QuestionType]
+    difficult: Mapped[QuestionDifficulty]
     text: Mapped[str]
+
+    category_id: Mapped[int] = mapped_column(ForeignKey("question_category.id"))
+    category: Mapped['QuestionCategory'] = relationship(back_populates="questions")
+
     answers: Mapped[list['Answer']] = relationship(
         secondary='question_answer', back_populates="questions"
     )
