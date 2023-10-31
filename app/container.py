@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 from dotenv import load_dotenv
 
-from app.infrastructure.db.models.base import SqlAlchemyDatabase
+from app.infrastructure.db.base import AsyncDatabase
 
 load_dotenv()
 
@@ -9,11 +9,15 @@ load_dotenv()
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration(yaml_files=["./app/config.yml"])
 
-    db = providers.Singleton(
-        SqlAlchemyDatabase,
-        host=config.database.host,
-        port=config.database.port,
-        name=config.database.name,
-        user=config.database.user,
-        password=config.database.password,
+    db_uri = providers.Factory(
+        lambda c: f"postgresql+asyncpg://{c.database.user}:{c.database.password}"
+        f"@{c.database.host}:{c.database.port}/{c.database.db_name}",
+        c=config
     )
+
+    db = providers.Singleton(
+        AsyncDatabase,
+        db_url=db_uri
+    )
+
+
