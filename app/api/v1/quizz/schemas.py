@@ -1,19 +1,24 @@
 from pydantic import BaseModel
 
-
-class Quizz(BaseModel):
-    pass
-
-class QuizzCreate(BaseModel):
-    pass
+from app.utils import QuestionDifficulty, QuestionType
 
 
-class QuizzRetrieve(BaseModel):
-    pass
+class Category(BaseModel):
+    title: str
 
 
-class QuizzList(BaseModel):
-    pass
+class Answer(BaseModel):
+    text: str
+    is_right: bool
 
 
+class Question(BaseModel):
+    text: str
+    type: QuestionType
+    difficult: QuestionDifficulty
+    categories: list[Category]
+    answers: list[Answer]
 
+
+class QuestionList(BaseModel):
+    questions: list[Question]

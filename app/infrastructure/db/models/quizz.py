@@ -1,11 +1,11 @@
 from datetime import datetime
-from enum import Enum
 from uuid import UUID
 
 from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.db.models.base import Base
+from app.utils import QuestionType, QuestionDifficulty
 
 
 class BaseModel(Base):
@@ -29,33 +29,37 @@ class QuestionAnswer(Base):
 class QuestionCategory(BaseModel):
     __tablename__ = 'question_category'
 
+    question_id: Mapped[int] = mapped_column(ForeignKey('questions.id'), primary_key=True)
+    category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'), primary_key=True)
+
+    question: Mapped[list['Question']] = relationship(back_populates='question_category')
+    category: Mapped[list['Category']] = relationship(back_populates='category_question')
+
+
+class Category(BaseModel):
+    __tablename__ = 'categories'
+
     id: Mapped[UUID] = mapped_column(primary_key=True)
     title: Mapped[str]
-    questions: Mapped[list['Question']] = relationship(back_populates="category")
+
+    questions: Mapped[list['Question']] = relationship(
+        secondary='question_category', back_populates="categories"
+    )
 
 
 class Question(BaseModel):
     __tablename__ = 'questions'
-
-    class QuestionType(Enum):
-        MULTI_CHOICE = 'MULTI_CHOICE'
-        SINGLE_CHOICE = 'SINGLE_CHOICE'
-
-    class QuestionDifficulty(Enum):
-        BEGINNER = 'BEGINNER'
-        MEDIUM = 'MEDIUM'
-        ADVANCED = 'ADVANCED'
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     type: Mapped[QuestionType]
     difficult: Mapped[QuestionDifficulty]
     text: Mapped[str]
 
-    category_id: Mapped[int] = mapped_column(ForeignKey("question_category.id"))
-    category: Mapped['QuestionCategory'] = relationship(back_populates="questions")
-
+    categories: Mapped['QuestionCategory'] = relationship(
+        secondary='question_category', back_populates='questions'
+    )
     answers: Mapped[list['Answer']] = relationship(
-        secondary='question_answer', back_populates="questions"
+        secondary='question_answer', back_populates='questions'
     )
 
 
@@ -64,6 +68,7 @@ class Answer(BaseModel):
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     text: Mapped[str]
+
     questions: Mapped[list['Question']] = relationship(
         secondary='question_answer', back_populates="answers"
     )
